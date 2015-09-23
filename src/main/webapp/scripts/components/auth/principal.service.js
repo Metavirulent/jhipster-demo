@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('demoApp')
-    .factory('Principal', function Principal($q, Account) {
+    .factory('Principal', function Principal($q, Account, $rootScope) {
         var _identity,
             _authenticated = false;
 
@@ -39,6 +39,7 @@ angular.module('demoApp')
             authenticate: function (identity) {
                 _identity = identity;
                 _authenticated = identity !== null;
+                $rootScope.account=_identity;
             },
             identity: function (force) {
                 var deferred = $q.defer();
@@ -59,15 +60,22 @@ angular.module('demoApp')
                 Account.get().$promise
                     .then(function (account) {
                         _identity = account.data;
+                        $rootScope.account=_identity;
                         _authenticated = true;
                         deferred.resolve(_identity);
                     })
                     .catch(function() {
                         _identity = null;
+                        $rootScope.account=_identity;
                         _authenticated = false;
                         deferred.resolve(_identity);
                     });
                 return deferred.promise;
+            },
+            account: function() {
+                if(angular.isDefined(_identity))
+                    return _identity;
+                return null;
             }
         };
     });

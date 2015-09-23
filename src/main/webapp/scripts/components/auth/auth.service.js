@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('demoApp')
-    .factory('Auth', function Auth($rootScope, $state, $q, $translate, Principal, AuthServerProvider, Account, Register, Activate, Password, PasswordResetInit, PasswordResetFinish) {
+    .factory('Auth', function Auth($rootScope, $state, $q, $translate, Principal, AuthServerProvider, Account, Register, Activate, Password, PasswordResetInit, PasswordResetFinish, SendLoginName) {
         return {
             login: function (credentials, callback) {
                 var cb = callback || angular.noop;
@@ -122,6 +122,16 @@ angular.module('demoApp')
                 return PasswordResetFinish.save(keyAndPassword, function () {
                     return cb();
                 }, function (err) {
+                    return cb(err);
+                }).$promise;
+            },
+            /**Send the login name to the given email address.*/
+            sendLoginName: function(mail, callback) {
+                var cb=callback || angular.noop;
+
+                return SendLoginName.save(mail, function() {
+                    return cb();
+                }, function(err) {
                     return cb(err);
                 }).$promise;
             }

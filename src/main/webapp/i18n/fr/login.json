@@ -14,6 +14,15 @@
         },
         "password" : {
             "forgot": "Avez-vous oublié votre mot de passe?"
+        },
+        "name" : {
+            "forgot": "Avez-vous oublié votre nom de compte?",
+            "text": "Entrez votre email et on vous envoyera votre nom de compte.",
+            "request": {
+                "form": {
+                    "button": "Envoyer"
+                }
+            }
         }
     }
 }

@@ -14,6 +14,15 @@
         },
         "password" : {
             "forgot": "Did you forget your password?"
+        },
+        "name" : {
+            "forgot": "Did you forget your login name?",
+            "text": "Enter your email address and we will send you the login name.",
+            "request": {
+                "form": {
+                    "button": "Send"
+                }
+            }
         }
     }
 }

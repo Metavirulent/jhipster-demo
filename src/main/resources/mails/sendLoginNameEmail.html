@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <title th:text="#{email.reset.title}">Demo app login name</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    </head>
+    <body>
+        <p th:text="#{login.name.greeting(${user.login})}">
+            Dear
+        </p>
+        <p th:text="#{login.name.text(${user.login})}">
+            Here's your account name: <b>{0}</b>.
+        </p>
+        <p>
+            <span th:text="#{login.name.regards}">Regards, </span>
+            <br/>
+            <em th:text="#{email.signature}">Demo app.</em>
+        </p>
+    </body>
+</html>

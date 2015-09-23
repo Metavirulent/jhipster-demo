@@ -13,3 +13,9 @@ angular.module('demoApp')
             }
         });
     });
+
+angular.module('demoApp')
+    .factory('SendLoginName', function SendLoginName($resource) {
+        return $resource('api/account/send_login_name', {}, {
+        });
+    });

@@ -223,4 +223,23 @@ public class AccountResource {
       return (!StringUtils.isEmpty(password) && password.length() >= UserDTO.PASSWORD_MIN_LENGTH && password.length() <= UserDTO.PASSWORD_MAX_LENGTH);
     }
 
+    @RequestMapping(value = "/account/send_login_name",
+            method = RequestMethod.POST,
+            produces = MediaType.TEXT_PLAIN_VALUE)
+        @Timed
+        public ResponseEntity<?> requestLoginName(@RequestBody String mail, HttpServletRequest request) {
+
+            return userService.getUserWithAuthoritiesByEmail(mail)
+                .map(user -> {
+                    String baseUrl = request.getScheme() +
+                        "://" +
+                        request.getServerName() +
+                        ":" +
+                        request.getServerPort();
+                mailService.sendLoginNameMail(user, baseUrl);
+                return new ResponseEntity<>("e-mail was sent", HttpStatus.OK);
+                }).orElse(new ResponseEntity<>("e-mail address not registered", HttpStatus.BAD_REQUEST));
+
+        }
+
 }

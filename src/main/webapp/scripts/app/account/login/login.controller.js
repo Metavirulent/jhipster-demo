@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('demoApp')
-    .controller('LoginController', function ($rootScope, $scope, $state, $timeout, Auth) {
+    .controller('LoginController', function ($rootScope, $scope, $state, $timeout, Auth, Principal) {
         $scope.user = {};
         $scope.errors = {};
 
@@ -9,6 +9,9 @@ angular.module('demoApp')
         $timeout(function (){angular.element('[ng-model="username"]').focus();});
         $scope.login = function (event) {
             event.preventDefault();
+            if(Principal.isAuthenticated()) {
+                Auth.logout();
+            }
             Auth.login({
                 username: $scope.username,
                 password: $scope.password,
