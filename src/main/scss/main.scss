@@ -1,10 +1,12 @@
 $icon-font-path: "../../bower_components/bootstrap-sass/assets/fonts/bootstrap/";
 
+@import "variables";
 // bower:scss
 @import "bootstrap-sass/assets/stylesheets/_bootstrap.scss";
 // endbower
+@import "bootswatch";
 
-body {
+/*body {
     background: #fafafa;
     font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
     color: #333;
@@ -12,13 +14,13 @@ body {
 
 [ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak, .x-ng-cloak {
     display: none !important;
-}
+}*/
 
 .development {
     position: absolute;
     width: 149px;
     height: 149px;
-    top: 0;
+    top: 64px;
     left: 0;
     border: 0;
     z-index: 1000;
@@ -32,7 +34,31 @@ body {
     color: #ccc
 }
 
-.browserupgrade {
+.img-featurette {
+    display: block;
+/*    width: 300px;
+    height: 300px;*/
+    margin-left: auto;
+    margin-right: auto;
+}
+
+/* MARKETING CONTENT
+-------------------------------------------------- */
+
+/* Center align the text within the three columns below the carousel */
+.marketing .col-lg-4 {
+  margin-bottom: 20px;
+  text-align: center;
+}
+.marketing h2 {
+  font-weight: normal;
+}
+.marketing .col-lg-4 p {
+  margin-right: 10px;
+  margin-left: 10px;
+}
+
+/*.browserupgrade {
     margin: 0.2em 0;
     background: #ccc;
     color: #000;
@@ -71,24 +97,24 @@ body {
 
 .pad {
     padding: 10px;
-}
+}*/
 
 /* wait autoprefixer update to allow simple generation of high pixel density media query */
-@media
-only screen and (-webkit-min-device-pixel-ratio: 2),
-only screen and (   min--moz-device-pixel-ratio: 2),
-only screen and (     -o-min-device-pixel-ratio: 2/1),
-only screen and (        min-device-pixel-ratio: 2),
+/*@media
+only screen and (-webkit-min-f-pixel-ratio: 2),
+only screen and (   min--moz-f-pixel-ratio: 2),
+only screen and (     -o-min-f-pixel-ratio: 2/1),
+only screen and (        min-f-pixel-ratio: 2),
 only screen and (                min-resolution: 192dpi),
 only screen and (                min-resolution: 2dppx) {
     .hipster {
         background: url("../images/hipster2x.png") no-repeat center top;
         background-size: contain;
     }
-}
+}*/
 
 /* make sure browsers use the pointer cursor for anchors, even with no href */
-a:hover {
+/*a:hover {
   cursor: pointer;
 }
 
@@ -113,10 +139,10 @@ a:hover {
 
 .alert .popover pre {
     font-size: 10px;
-}
+}*/
 
 /* start Password strength bar style */
-ul#strength {
+/*ul#strength {
     display:inline;
     list-style:none;
     margin:0;
@@ -135,10 +161,10 @@ ul#strength {
     height:5px;
     margin-right:1px;
     width:20px;
-}
+}*/
 /* end Password strength bar style */
 /* Custom alerts for notification */
-.alerts .alert{
+/*.alerts .alert{
     text-overflow: ellipsis;
 }
 .alert pre{
@@ -148,5 +174,5 @@ ul#strength {
     color: inherit;
     padding: 0;
     margin: 0;
-}
+}*/
 /* end of Custom alerts for notification */

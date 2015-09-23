@@ -1,6 +1,6 @@
 {
     "global": {
-        "title": "demo",
+        "title": "Demo de Markus Öllinger",
         "browsehappy": "Vous utilisez un <strong>ancien</strong> navigateur. Veuillez <a href=\"http://browsehappy.com/?locale=fr\">mettre à jour votre navigateur</a> pour une meilleure expérience.",
         "menu": {
             "home": "Accueil",
@@ -104,5 +104,5 @@
             "datetimelocal": "Ce champs doit être une date et une heure."
         }
     },
-    "footer": "Ceci est votre pied de page"
+    "footer": "&copy; 2015 Markus Öllinger"
 }

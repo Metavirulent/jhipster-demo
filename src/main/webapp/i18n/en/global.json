@@ -1,6 +1,6 @@
 {
     "global": {
-        "title": "demo",
+        "title": "Markus Öllinger's Demo",
         "browsehappy": "You are using an <strong>outdated</strong> browser. Please <a href=\"http://browsehappy.com/?locale=en\">upgrade your browser</a> to improve your experience.",
         "menu": {
             "home": "Home",
@@ -13,7 +13,7 @@
                 "settings": "Settings",
                 "password": "Password",
                 "sessions": "Sessions",
-                "login": "Authenticate",
+                "login": "Login",
                 "logout": "Log out",
                 "register": "Register"
             },
@@ -108,5 +108,5 @@
         "serverNotReachable": "Server not reachable",
         "NotNull": "Field {{fieldName}} cannot be empty!"
     },
-    "footer": "This is your footer"
+    "footer": "&copy; 2015 Markus Öllinger"
 }
