@@ -1,0 +1,20 @@
+{
+    "demoApp": {
+        "conversation" : {
+            "home": {
+                "title": "Conversations",
+                "createLabel": "Créer un nouveau Conversation",
+                "createOrEditLabel": "Créer ou éditer un Conversation"
+            },
+            "delete": {
+                "question": "Etes-vous certain de vouloir supprimer le Conversation {{ id }} ?"
+            },
+            "detail": {
+                "title": "Conversation"
+            },
+            "name": "Name",
+            "users": "Users"
+        }
+    }
+}
+

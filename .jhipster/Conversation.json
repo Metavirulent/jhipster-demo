@@ -1,0 +1,25 @@
+{
+    "relationships": [
+        {
+            "relationshipId": 1,
+            "relationshipName": "users",
+            "otherEntityName": "user",
+            "relationshipType": "many-to-many",
+            "otherEntityField": "firstName",
+            "ownerSide": true
+        }
+    ],
+    "fields": [
+        {
+            "fieldId": 1,
+            "fieldName": "name",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "required"
+            ]
+        }
+    ],
+    "changelogDate": "20150924114321",
+    "dto": "no",
+    "pagination": "infinite-scroll"
+}

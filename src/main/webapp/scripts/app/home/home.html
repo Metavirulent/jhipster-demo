@@ -1,15 +1,13 @@
-<div ng-cloak>
+<div class="container" ng-cloak>
     <div class="jumbotron">
-      <div class="container">
-        <h1>Welcome to Markus' Demo App!</h1>
+      <div class="container" ng-switch="isAuthenticated()">
+        <h1 ng-switch-when="false">Welcome to Markus' Demo App!</h1>
+        <h1 ng-switch-when="true">Welcome {{account.login}} to Markus' Demo App!</h1>
         <p>This is a simple app to demonstrate my Java web development skills. It is awesome, so you may want to sign up.</p>
-        <div ng-hide="isAuthenticated()">
+        <div ng-switch-when="false">
           <p><a class="btn btn-primary btn-lg" ui-sref="register" role="button">Sign Up Now &raquo;</a></p>
           <p>Already have an account? Why don't you <a ui-sref="login">log in</a>.</p>
         </div>
-        <p ng-show="isAuthenticated()" translate="main.logged.welcome" translate-values="{username: '{{account.login}}'}">
-            Welcome back, "{{account.login}}"!
-        </p>
       </div>
     </div>
     <div class="container marketing">

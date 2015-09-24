@@ -20,7 +20,7 @@ $icon-font-path: "../../bower_components/bootstrap-sass/assets/fonts/bootstrap/"
     position: absolute;
     width: 149px;
     height: 149px;
-    top: 64px;
+    top: 0px;
     left: 0;
     border: 0;
     z-index: 1000;
@@ -40,6 +40,10 @@ $icon-font-path: "../../bower_components/bootstrap-sass/assets/fonts/bootstrap/"
     height: 300px;*/
     margin-left: auto;
     margin-right: auto;
+}
+
+.conversations {
+  border-right: 1px dashed #afafaf;
 }
 
 /* Sticky footer styles

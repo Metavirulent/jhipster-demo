@@ -14,10 +14,10 @@ describe('Services Tests ', function () {
             spiedAuthServerProvider = AuthServerProvider;
             //Request on app init
             $httpBackend.whenGET(/api\/account\?cacheBuster=\d+/).respond({});
-            $httpBackend.whenGET('scripts/app/main/main.html').respond({});
+            $httpBackend.whenGET('scripts/app/home/home.html').respond({});
             $httpBackend.whenGET('scripts/components/navbar/navbar.html').respond({});
             var globalJson = new RegExp('i18n\/.*\/global.json')
-            var mainJson = new RegExp('i18n\/.*\/main.json');
+            var mainJson = new RegExp('i18n\/.*\/home.json');
             $httpBackend.whenGET(globalJson).respond({});
             $httpBackend.whenGET(mainJson).respond({});
             $httpBackend.expectPOST(/api\/logout\?cacheBuster=\d+/).respond(200, '');

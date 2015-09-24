@@ -19,14 +19,11 @@
         <!--[if lt IE 9]>
             <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
         <![endif]-->
-        <div ng-show="{{ENV === 'dev'}}" class="development" ng-cloak=""></div>
         <div ui-view="navbar" ng-cloak=""></div>
-        <div class="container">
-            <div class="" ui-view="content"></div>
+        <div class="" ui-view="content"></div>
 
-            <div class="footer">
-                <p translate="footer">(c) 2015 Bitmen Studios</p>
-            </div>
+        <div class="footer">
+            <p translate="footer">(c) 2015 Bitmen Studios</p>
         </div>
 
         <!-- Google Analytics: uncomment and change UA-XXXXX-X to be your site's ID.
@@ -136,8 +133,8 @@
     <script src="scripts/app/admin/user-management/user-management.js"></script>
     <script src="scripts/app/entities/entity.js"></script>
     <script src="scripts/app/error/error.js"></script>
-    <script src="scripts/app/main/main.js"></script>
-    <script src="scripts/app/main/main.controller.js"></script>
+    <script src="scripts/app/home/home.js"></script>
+    <script src="scripts/app/home/home.controller.js"></script>
     <script src="bower_components/messageformat/locale/en.js"></script>
     <script src="bower_components/messageformat/locale/fr.js"></script>
     <script src="scripts/components/language/language.service.js"></script>
@@ -146,6 +143,18 @@
     <script src="scripts/components/auth/provider/auth.session.service.js"></script>
     <script src="scripts/app/account/sessions/sessions.js"></script>
     <script src="scripts/app/account/sessions/sessions.controller.js"></script>
+    <script src="scripts/app/entities/conversation/conversation.js"></script>
+    <script src="scripts/app/entities/conversation/conversation.controller.js"></script>
+    <script src="scripts/app/entities/conversation/conversation-dialog.controller.js"></script>
+    <script src="scripts/app/entities/conversation/conversation-detail.controller.js"></script>
+    <script src="scripts/components/entities/conversation/conversation.service.js"></script>
+    <script src="scripts/components/entities/conversation/conversation.search.service.js"></script>
+    <script src="scripts/app/entities/message/message.js"></script>
+    <script src="scripts/app/entities/message/message.controller.js"></script>
+    <script src="scripts/app/entities/message/message-dialog.controller.js"></script>
+    <script src="scripts/app/entities/message/message-detail.controller.js"></script>
+    <script src="scripts/components/entities/message/message.service.js"></script>
+    <script src="scripts/components/entities/message/message.search.service.js"></script>
     <!-- endbuild -->
 </body>
 </html>
