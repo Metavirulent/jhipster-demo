@@ -4,12 +4,12 @@
             <h1 translate="login.name.forgot">Forgot your login?</h1>
             <p translate="login.name.text">Enter your email address and we will send you the login name.</p>
 
-            <div class="alert alert-danger" translate="reset.request.messages.notfound" ng-show="errorEmailNotExists">
+            <div class="alert alert-danger" translate="login.email.notfound" ng-show="errorEmailNotExists">
                 <strong>E-Mail address isn't registered!</strong> Please check and try again.
             </div>
 
            <div class="alert alert-success" ng-show="success == 'OK'">
-                <p translate="reset.request.messages.success">Your login name was sent to your e-mails address.</p>
+                <p translate="login.name.request.success">Your login name was sent to your e-mails address.</p>
             </div>
 
             <form ng-show="!success" name="form" role="form" novalidate ng-submit="sendLoginName()" show-validation>

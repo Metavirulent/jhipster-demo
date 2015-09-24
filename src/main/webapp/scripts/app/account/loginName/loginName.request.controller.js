@@ -9,12 +9,12 @@ angular.module('demoApp')
         $scope.email = null;
         $timeout(function (){angular.element('[ng-model="email"]').focus();});
 
-        $scope.requestReset = function () {
+        $scope.sendLoginName = function () {
 
             $scope.error = null;
             $scope.errorEmailNotExists = null;
 
-            Auth.sendLoginName($scope.resetAccount.email).then(function () {
+            Auth.sendLoginName($scope.email).then(function () {
                 $scope.success = 'OK';
             }).catch(function (response) {
                 $scope.success = null;

@@ -22,7 +22,10 @@
                 "form": {
                     "button": "Send"
                 }
+                ,
+                "success": "An email with the login name was sent to you."
             }
-        }
+        },
+        "email.notfound": "<strong>E-Mail address isn't registered!</strong> Please check and try again."
     }
 }

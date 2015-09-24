@@ -21,8 +21,10 @@
             "request": {
                 "form": {
                     "button": "Envoyer"
-                }
+                },
+                "success": "An email with the login name was sent to you."
             }
-        }
+        },
+        "email.notfound": "<strong>Email pas régistré!</strong> Essayez encore une fois."
     }
 }
