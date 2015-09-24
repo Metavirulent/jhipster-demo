@@ -122,3 +122,6 @@ Desktop.ini
 # Gradle Wrapper
 ######################
 !gradle/wrapper/gradle-wrapper.jar
+
+#Word temporary files
+/~$*.docx
