@@ -7,6 +7,9 @@
           <p><a class="btn btn-primary btn-lg" ui-sref="register" role="button">Sign Up Now &raquo;</a></p>
           <p>Already have an account? Why don't you <a ui-sref="login">log in</a>.</p>
         </div>
+        <p ng-show="isAuthenticated()" translate="main.logged.welcome" translate-values="{username: '{{account.login}}'}">
+            Welcome back, "{{account.login}}"!
+        </p>
       </div>
     </div>
     <div class="container marketing">
