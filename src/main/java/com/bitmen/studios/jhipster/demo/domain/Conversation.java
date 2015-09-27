@@ -1,15 +1,27 @@
 package com.bitmen.studios.jhipster.demo.domain;
 
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Objects;
+import java.util.Set;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
+
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.springframework.data.elasticsearch.annotations.Document;
-
-import javax.persistence.*;
-import javax.validation.constraints.*;
-import java.io.Serializable;
-import java.util.HashSet;
-import java.util.Set;
-import java.util.Objects;
 
 /**
  * A Conversation.
@@ -34,6 +46,8 @@ public class Conversation implements Serializable {
                joinColumns = @JoinColumn(name="conversation_id", referencedColumnName="ID"),
                inverseJoinColumns = @JoinColumn(name="user_id", referencedColumnName="ID"))
     private Set<User> users = new HashSet<>();
+    @OneToMany
+    private List<Message> messages=new ArrayList<>();
 
     public Long getId() {
         return id;

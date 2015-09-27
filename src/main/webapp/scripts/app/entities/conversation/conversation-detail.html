@@ -1,40 +1,34 @@
 
-<div>
-    <h2><span translate="demoApp.conversation.detail.title">Conversation</span> {{conversation.id}}</h2>
+<div ng-show="currentConversation!=null">
+    <form class="form-inline" ng-submit="nameChanged()">
+        <div class="form-group form-group-lg">
+        <label for="conversation-name">Conversation: </label>
+            <input id="conversation-name" class="form-control" style="font-weight:bold;" ng-model="conversation.name" required/>
+        </div>
+    </form>
+    <form class="form-horizontal" ng-submit="sendMessage()">
+        <div class="form-group form-group-lg">
+            <textarea msd-elastic style="width: 100%;" type="text" placeholder="Write a message" ng-model="message" autofocus required enter-submit="sendMessage()"/>
+            <button type="submit">Send</button>
+        </div>
+    </form>
+
     <div class="table-responsive">
         <table class="table table-striped">
             <thead>
-            <tr>
-                <th translate="entity.detail.field">Field</th>
-                <th translate="entity.detail.value">Value</th>
-            </tr>
+                <tr>
+                    <th>Messages</th>
+                </tr>
             </thead>
-            <tbody>
-            <tr>
-                <td>
-                    <span translate="demoApp.conversation.name">Name</span>
-                </td>
-                <td>
-                    <span class="form-control-static">{{conversation.name}}</span>
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <span translate="demoApp.conversation.users">users</span>
-                </td>
-                <td>
-                    <span ng-repeat="users in conversation.userss">
-                        {{users.firstName}}{{$last ? '' : ', '}}
-                    <span>
-                </td>
-            </tr>
+            <tbody infinite-scroll="loadPage(page + 1)" infinite-scroll-disabled="links['last'] == page">
+                <tr ng-repeat="message in messages">
+                    <td><b>{{message.user.login}}:</b> <pre>{{message.text}}</pre></td>
+                </tr>
             </tbody>
         </table>
     </div>
-
-    <button type="submit"
-            onclick="window.history.back()"
-            class="btn btn-info">
-        <span class="glyphicon glyphicon-arrow-left"></span>&nbsp;<span translate="entity.action.back"> Back</span>
-    </button>
+</div>
+<div ng-show="currentConversation==null" ng-switch="conversations.length>0">
+    <p ng-switch-when="true">Select one of your existing conversations or start a <a ui-sref="conversations.new">new one.</a>.</p>
+    <p ng-switch-when="false">Start out by creating a <a ui-sref="conversations.new">new Conversation.</a></p>
 </div>

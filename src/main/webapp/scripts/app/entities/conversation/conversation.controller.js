@@ -1,11 +1,12 @@
 'use strict';
 
 angular.module('demoApp')
-    .controller('ConversationController', function ($scope, Conversation, ConversationSearch, ParseLinks, currentConversation) {
+    .controller('ConversationController', function ($scope, $location, Conversation, ConversationSearch, ParseLinks, $state, $rootScope) {
         $scope.conversations = [];
-        $scope.currentConversation = currentConversation;
         $scope.page = 0;
+        $scope.currentConversation=null;
         $scope.loadAll = function() {
+            $scope.conversations = [];
             Conversation.query({page: $scope.page, size: 20}, function(result, headers) {
                 $scope.links = ParseLinks.parse(headers('link'));
                 for (var i = 0; i < result.length; i++) {
@@ -37,6 +38,10 @@ angular.module('demoApp')
                     $scope.reset();
                     $('#deleteConversationConfirmation').modal('hide');
                     $scope.clear();
+                    if($scope.currentConversation!=null && $scope.currentConversation.id==id) {
+                        $scope.currentConversation=null;
+                        $location.path("conversations/");
+                    }
                 });
         };
 
@@ -58,4 +63,15 @@ angular.module('demoApp')
         $scope.clear = function () {
             $scope.conversation = {name: null, id: null};
         };
+
+        $scope.selectConversation = function (conversation) {
+            $scope.currentConversation=conversation;
+//            $location.path("/conversations/"+conversation.id);                  //change URL so we can bookmark it
+            $state.go("conversations", {id: conversation.id}, { reload: false });        //show the given conversation
+        }
+
+        $scope.$on('demoApp:conversationUpdate', function(event, result) {
+            $scope.currentConversation=result;
+        });
+
     });

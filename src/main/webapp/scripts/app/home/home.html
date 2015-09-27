@@ -2,11 +2,14 @@
     <div class="jumbotron">
       <div class="container" ng-switch="isAuthenticated()">
         <h1 ng-switch-when="false">Welcome to Markus' Demo App!</h1>
-        <h1 ng-switch-when="true">Welcome {{account.login}} to Markus' Demo App!</h1>
+        <h1 ng-switch-when="true">Welcome, {{account.login}}, to Markus' Demo App!</h1>
         <p>This is a simple app to demonstrate my Java web development skills. It is awesome, so you may want to sign up.</p>
         <div ng-switch-when="false">
           <p><a class="btn btn-primary btn-lg" ui-sref="register" role="button">Sign Up Now &raquo;</a></p>
           <p>Already have an account? Why don't you <a ui-sref="login">log in</a>.</p>
+        </div>
+        <div ng-switch-when="true">
+          <p>Proceed to your <a ui-sref="conversations">Conversations</a> to get started.</p>
         </div>
       </div>
     </div>

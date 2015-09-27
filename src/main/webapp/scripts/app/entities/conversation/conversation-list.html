@@ -1,5 +1,5 @@
 <div class="conversations">
-    <h2 translate="demoApp.conversation.home.title">Conversations</h2>
+    <h4 translate="demoApp.conversation.home.title">Conversations</h4>
     <div class="container">
         <form name="searchForm" class="form-inline">
             <div class="form-group">
@@ -20,7 +20,7 @@
                 </tr>
             </thead>
             <tbody infinite-scroll="loadPage(page + 1)" infinite-scroll-disabled="links['last'] == page">
-                <tr ng-repeat="conversation in conversations">
+                <tr ng-repeat="conversation in conversations" ng-click="selectConversation(conversation)" ng-class="{active: conversation===currentConversation}">
                     <td><a ui-sref="conversation.detail({id:conversation.id})">{{conversation.id}}</a></td>
                     <td>{{conversation.name}}</td>
                     <td>
@@ -45,7 +45,7 @@
         </table>
     </div>
     <div class="container">
-        <button class="btn btn-primary" ui-sref="conversation.new">
+        <button class="btn btn-primary" ui-sref="conversations.new">
             <span class="glyphicon glyphicon-flash"></span> <span translate="demoApp.conversation.home.createLabel">Create a new Conversation</span>
         </button>
     </div>

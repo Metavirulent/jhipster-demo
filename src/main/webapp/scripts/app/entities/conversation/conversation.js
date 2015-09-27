@@ -27,28 +27,46 @@ angular.module('demoApp')
                     }
                 }
             })*/
-            .state('conversations', {
+            .state('main', {
                 parent: 'entity',
-                url: '/conversations/{id}',
-                data: {
-                    authorities: ['ROLE_USER']
-                },
                 views: {
                     'content@': {
                         templateUrl: 'scripts/app/entities/conversation/conversations.html',
                         controller: 'ConversationController'
                     },
-                    'conversations@conversations': {
+                    'conversations@main': {
                         templateUrl: 'scripts/app/entities/conversation/conversation-list.html'
-                    },
-                    'conversation@conversations' : {
-                        templateUrl: 'scripts/app/entities/conversation/conversation-detail.html'
                     }
                 },
                 resolve: {
                     translatePartialLoader: ['$translate', '$translatePartialLoader', function ($translate, $translatePartialLoader) {
                         $translatePartialLoader.addPart('conversation');
                         $translatePartialLoader.addPart('global');
+                        return $translate.refresh();
+                    }]
+                }
+            })
+            .state('conversations', {
+                parent: 'main',
+                url: '/conversations/{id}',
+                data: {
+                    authorities: ['ROLE_USER']
+                },
+                views: {
+/*                    'content@': {
+                        templateUrl: 'scripts/app/entities/conversation/conversations.html',
+                        controller: 'ConversationController'
+                    },*/
+                    'conversation' : {
+                        templateUrl: 'scripts/app/entities/conversation/conversation-detail.html',
+                        controller: 'ConversationDetailController'
+                    }
+                },
+                resolve: {
+                    translatePartialLoader: ['$translate', '$translatePartialLoader', function ($translate, $translatePartialLoader) {
+                        $translatePartialLoader.addPart('conversation');
+                        $translatePartialLoader.addPart('global');
+                        $translatePartialLoader.addPart('message');
                         return $translate.refresh();
                     }],
                     currentConversation: ['$stateParams', 'Conversation', function($stateParams, Conversation) {
@@ -81,13 +99,13 @@ angular.module('demoApp')
                     }]
                 }
             })
-            .state('conversation.new', {
-                parent: 'conversation',
+            .state('conversations.new', {
+                parent: 'conversations',
                 url: '/new',
                 data: {
                     authorities: ['ROLE_USER'],
                 },
-                onEnter: ['$stateParams', '$state', '$modal', function($stateParams, $state, $modal) {
+                onEnter: ['$stateParams', '$state', '$modal', function($stateParams, $state, $modal, $rootScope) {
                     $modal.open({
                         templateUrl: 'scripts/app/entities/conversation/conversation-dialog.html',
                         controller: 'ConversationDialogController',
@@ -98,9 +116,9 @@ angular.module('demoApp')
                             }
                         }
                     }).result.then(function(result) {
-                        $state.go('conversation', null, { reload: true });
+                        $state.go('conversations', {id: result.id}, { reload: true });
                     }, function() {
-                        $state.go('conversation');
+                        $state.go('conversations');
                     })
                 }]
             })
@@ -121,7 +139,7 @@ angular.module('demoApp')
                             }]
                         }
                     }).result.then(function(result) {
-                        $state.go('conversation', null, { reload: true });
+                        $state.go('conversation', {id: result.id}, { reload: true });
                     }, function() {
                         $state.go('^');
                     })
