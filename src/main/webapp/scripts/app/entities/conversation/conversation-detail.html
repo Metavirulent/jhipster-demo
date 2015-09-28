@@ -3,12 +3,12 @@
     <form class="form-inline" ng-submit="nameChanged()">
         <div class="form-group form-group-lg">
         <label for="conversation-name">Conversation: </label>
-            <input id="conversation-name" class="form-control" style="font-weight:bold;" ng-model="conversation.name" required/>
+            <input id="conversation-name" class="form-control" style="font-weight:bold;" ng-model="currentConversation.name" required/>
         </div>
     </form>
     <form class="form-horizontal" ng-submit="sendMessage()">
         <div class="form-group form-group-lg">
-            <textarea msd-elastic style="width: 100%;" type="text" placeholder="Write a message" ng-model="message" autofocus required enter-submit="sendMessage()"/>
+            <textarea msd-elastic style="width: 100%;" type="text" placeholder="Write a message" ng-model="message.text" autofocus required enter-submit="sendMessage()"/>
             <button type="submit">Send</button>
         </div>
     </form>
@@ -22,7 +22,7 @@
             </thead>
             <tbody infinite-scroll="loadPage(page + 1)" infinite-scroll-disabled="links['last'] == page">
                 <tr ng-repeat="message in messages">
-                    <td><b>{{message.user.login}}:</b> <pre>{{message.text}}</pre></td>
+                    <td><b>{{message.userLogin}}:</b> <pre>{{message.text}}</pre></td>
                 </tr>
             </tbody>
         </table>

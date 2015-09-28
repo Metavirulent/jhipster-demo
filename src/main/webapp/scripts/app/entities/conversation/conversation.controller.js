@@ -1,10 +1,23 @@
 'use strict';
 
 angular.module('demoApp')
-    .controller('ConversationController', function ($scope, $location, Conversation, ConversationSearch, ParseLinks, $state, $rootScope) {
+    .controller('ConversationController', function ($scope, $location, Conversation, ConversationSearch, ParseLinks, $state, $stateParams, $rootScope) {
         $scope.conversations = [];
         $scope.page = 0;
-        $scope.currentConversation=null;
+//        $scope.currentConversation=currentConversation;
+        //load conversation stated in state param id, e.g. /conversations/1
+/*        $scope.loadCurrentConversation=function() {
+            var cid=$stateParams.id;
+            if(cid!=null && cid.length>0) {
+                Conversation.get({id : cid},function(result) {
+                    $scope.currentConversation=result;
+                    $scope.refresh();
+                    $rootScope.$broadcast('demoApp:conversationUpdate', result);
+
+                });
+            }
+        }*/
+
         $scope.loadAll = function() {
             $scope.conversations = [];
             Conversation.query({page: $scope.page, size: 20}, function(result, headers) {
@@ -23,7 +36,8 @@ angular.module('demoApp')
             $scope.page = page;
             $scope.loadAll();
         };
-        $scope.loadAll();
+//        $scope.loadCurrentConversation();
+        $scope.loadAll();               //load all messages
 
         $scope.delete = function (id) {
             Conversation.get({id: id}, function(result) {
@@ -64,13 +78,16 @@ angular.module('demoApp')
             $scope.conversation = {name: null, id: null};
         };
 
+        /**The user has selected the given conversation. Switch to it.*/
         $scope.selectConversation = function (conversation) {
-            $scope.currentConversation=conversation;
+//            $scope.currentConversation=conversation;
 //            $location.path("/conversations/"+conversation.id);                  //change URL so we can bookmark it
-            $state.go("conversations", {id: conversation.id}, { reload: false });        //show the given conversation
-        }
+            if(conversation!=null)
+                $state.go("conversations", {id: conversation.id}, { reload: false });        //show the given conversation
+            else $state.go("conversations", {}, {reload:false});
+        };
 
-        $scope.$on('demoApp:conversationUpdate', function(event, result) {
+        $scope.$on('demoApp:showConversation', function(e, result) {
             $scope.currentConversation=result;
         });
 

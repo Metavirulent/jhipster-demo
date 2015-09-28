@@ -69,10 +69,13 @@ angular.module('demoApp')
                         $translatePartialLoader.addPart('message');
                         return $translate.refresh();
                     }],
-                    currentConversation: ['$stateParams', 'Conversation', function($stateParams, Conversation) {
+                    currentConversation: ['$stateParams', 'Conversation', '$rootScope', function($stateParams, Conversation, $rootScope) {
                         var cid=$stateParams.id;
                         if(cid.length==0) return null;
-                        return Conversation.get({id : cid});
+                        return Conversation.get({id : cid},function(result) {
+//                            $rootScope.currentConversation=result;
+//                            $rootScope.broadcast('demoApp:showConversation',result);
+                        });
                     }]
                 }
             })

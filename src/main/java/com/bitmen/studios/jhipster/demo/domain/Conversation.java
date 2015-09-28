@@ -24,7 +24,7 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.springframework.data.elasticsearch.annotations.Document;
 
 /**
- * A Conversation.
+ * A Conversation is a container of a list of Messages exchanged between Users.
  */
 @Entity
 @Table(name = "CONVERSATION")
@@ -46,8 +46,6 @@ public class Conversation implements Serializable {
                joinColumns = @JoinColumn(name="conversation_id", referencedColumnName="ID"),
                inverseJoinColumns = @JoinColumn(name="user_id", referencedColumnName="ID"))
     private Set<User> users = new HashSet<>();
-    @OneToMany
-    private List<Message> messages=new ArrayList<>();
 
     public Long getId() {
         return id;
@@ -73,7 +71,7 @@ public class Conversation implements Serializable {
         this.users = users;
     }
 
-    @Override
+	@Override
     public boolean equals(Object o) {
         if (this == o) {
             return true;

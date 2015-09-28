@@ -2,7 +2,7 @@
 
 angular.module('demoApp')
     .factory('Message', function ($resource, DateUtils) {
-        return $resource('api/messages/:id', {}, {
+        return $resource('api/conversation/:cid/messages/:id', {cid: '@conversationId'}, {
             'query': { method: 'GET', isArray: true},
             'get': {
                 method: 'GET',
@@ -11,6 +11,6 @@ angular.module('demoApp')
                     return data;
                 }
             },
-            'update': { method:'PUT' }
+            'update': { method:'PUT' },
         });
     });

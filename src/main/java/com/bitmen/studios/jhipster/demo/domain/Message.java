@@ -17,14 +17,13 @@ import java.util.Objects;
 @Entity
 @Table(name = "MESSAGE")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-@Document(indexName="message")
 public class Message extends AbstractAuditingEntity implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @Size(min = 1)        
+    @Size(min = 1)
     @Column(name = "text")
     private String text;
 
@@ -92,6 +91,8 @@ public class Message extends AbstractAuditingEntity implements Serializable {
         return "Message{" +
                 "id=" + id +
                 ", text='" + text + "'" +
+                ", conversation="+conversation+
                 '}';
+//        return String.format("Message[{0},{1},{2}]", id,text,conversation.getId());
     }
 }
