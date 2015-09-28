@@ -2,8 +2,10 @@ package com.bitmen.studios.jhipster.demo.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
 import com.bitmen.studios.jhipster.demo.domain.Conversation;
+import com.bitmen.studios.jhipster.demo.domain.Message;
 import com.bitmen.studios.jhipster.demo.repository.ConversationRepository;
 import com.bitmen.studios.jhipster.demo.repository.search.ConversationSearchRepository;
+import com.bitmen.studios.jhipster.demo.web.rest.dto.MessageDTO;
 import com.bitmen.studios.jhipster.demo.web.rest.util.HeaderUtil;
 import com.bitmen.studios.jhipster.demo.web.rest.util.PaginationUtil;
 import org.slf4j.Logger;
@@ -109,6 +111,23 @@ public class ConversationResource {
                 HttpStatus.OK))
             .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
+    
+    /**Get all conversations that are newer than the given one.
+     * 
+     * @param id the ID of the Conversation the client has last received.
+     * @return a response containing all conversations that are newer.
+     */
+    @RequestMapping(value="/conversation/new/{id}",
+    		method=RequestMethod.GET,
+    		produces=MediaType.APPLICATION_JSON_VALUE)
+    @Timed
+    public ResponseEntity<List<Conversation>> getNewConversations(@PathVariable Long id) {
+        log.debug("REST request to get new Conversations after : {}", id);
+    	List<Conversation> newConversations=conversationRepository.findAllAfter(id);
+    	log.debug("found {} entries",newConversations.size());
+        return new ResponseEntity<>(newConversations, null, HttpStatus.OK);
+    }
+
 
     /**
      * DELETE  /conversations/:id -> delete the "id" conversation.

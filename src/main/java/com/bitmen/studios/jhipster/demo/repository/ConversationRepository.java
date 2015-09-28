@@ -16,5 +16,8 @@ public interface ConversationRepository extends JpaRepository<Conversation,Long>
 
     @Query("select conversation from Conversation conversation left join fetch conversation.users where conversation.id =:id")
     Conversation findOneWithEagerRelationships(@Param("id") Long id);
+    
+    @Query("select conversation from Conversation conversation, Conversation c where c.id=:id and conversation.createdDate>c.createdDate order by conversation.createdDate desc")
+    List<Conversation> findAllAfter(@Param("id") Long id);
 
 }

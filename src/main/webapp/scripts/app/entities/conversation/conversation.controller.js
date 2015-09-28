@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('demoApp')
-    .controller('ConversationController', function ($scope, $location, Conversation, ConversationSearch, ParseLinks, $state, $stateParams, $rootScope) {
+    .controller('ConversationController', function ($scope, $location, $interval, $http, Conversation, ConversationSearch, ParseLinks, $state, $stateParams, $rootScope) {
         $scope.conversations = [];
         $scope.page = 0;
 //        $scope.currentConversation=currentConversation;
@@ -90,5 +90,25 @@ angular.module('demoApp')
         $scope.$on('demoApp:showConversation', function(e, result) {
             $scope.currentConversation=result;
         });
+
+                //poll the server at regular intervals
+        var polling=$interval(function() {
+            if($scope.conversations.length==0) return;
+            var c=$scope.conversations[0];
+            $http.get('/api/conversation/new/'+c.id).then(function(response) {
+                var newEntries=angular.fromJson(response.data);
+                if(newEntries.length>0) {           //did we get results?
+                    for(var e in newEntries) {
+                        //TODO insert at correct position depending on creation date
+                        $scope.conversations.unshift(e);
+                    }
+                }
+            })
+        },10000);
+
+        $scope.$on('$destroy', function() {
+            $interval.cancel(polling);
+        })
+
 
     });

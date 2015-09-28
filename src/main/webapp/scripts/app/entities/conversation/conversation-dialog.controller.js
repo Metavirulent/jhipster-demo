@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('demoApp').controller('ConversationDialogController',
-    ['$scope', '$stateParams', '$modalInstance', 'entity', 'Conversation', 'User',
-        function($scope, $stateParams, $modalInstance, entity, Conversation, User) {
+    ['$scope', '$rootScope', '$stateParams', '$modalInstance', 'entity', 'Conversation', 'User',
+        function($scope, $rootScope, $stateParams, $modalInstance, entity, Conversation, User) {
 
         $scope.conversation = entity;
         $scope.users = User.query();
@@ -21,6 +21,8 @@ angular.module('demoApp').controller('ConversationDialogController',
             if ($scope.conversation.id != null) {
                 Conversation.update($scope.conversation, onSaveFinished);
             } else {
+                $scope.conversation.createdBy=$rootScope.account.login;
+                $scope.conversation.createdDate=Date.now();
                 Conversation.save($scope.conversation, onSaveFinished);
             }
         };

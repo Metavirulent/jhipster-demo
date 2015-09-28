@@ -30,7 +30,7 @@ import org.springframework.data.elasticsearch.annotations.Document;
 @Table(name = "CONVERSATION")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 @Document(indexName="conversation")
-public class Conversation implements Serializable {
+public class Conversation extends AbstractAuditingEntity implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

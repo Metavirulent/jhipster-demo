@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('demoApp')
-    .controller('ConversationDetailController', function ($scope, $rootScope, $stateParams, Conversation, Message, User, currentConversation, ParseLinks) {
+    .controller('ConversationDetailController', function ($scope, $rootScope, $stateParams, $interval, $http, Conversation, Message, User, currentConversation, ParseLinks) {
         $scope.messages = [];           //all messages shown in the correct order
         $scope.page = 0;                //page we have loaded
         $scope.currentConversation=currentConversation;
@@ -91,6 +91,27 @@ angular.module('demoApp')
         $scope.nameChanged=function() {
             Conversation.update($scope.currentConversation);
         }
+
+        //poll the server at regular intervals
+        var polling=$interval(function() {
+            if($scope.messages.length==0) return;
+            var newestMessage=$scope.messages[0];
+            $http.get('/api/conversation/'+newestMessage.conversationId+'/new-messages/'+newestMessage.id).then(function(response) {
+                var newEntries=angular.fromJson(response.data);
+                if(newEntries.length>0) {           //did we get results?
+                    if(newEntries[0].conversationId==$scope.currentConversation.id) {       //are they for current conversation?
+                        for(var e in newEntries) {
+                            //TODO insert at correct position depending on creation date
+                            $scope.messages.unshift(e);
+                        }
+                    }
+                }
+            })
+        },10000);
+
+        $scope.$on('$destroy', function() {
+            $interval.cancel(polling);
+        })
 
     })
     .directive('reset-focus', function($timeout, $parse) {

@@ -20,6 +20,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -27,7 +28,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.bitmen.studios.jhipster.demo.domain.Message;
-import com.bitmen.studios.jhipster.demo.domain.User;
 import com.bitmen.studios.jhipster.demo.repository.ConversationRepository;
 import com.bitmen.studios.jhipster.demo.repository.MessageRepository;
 import com.bitmen.studios.jhipster.demo.repository.UserRepository;
@@ -44,6 +44,7 @@ import com.codahale.metrics.annotation.Timed;
  */
 @RestController
 @RequestMapping("/api")
+@EnableAsync
 public class MessageResource {
 
     private final Logger log = LoggerFactory.getLogger(MessageResource.class);
@@ -62,7 +63,8 @@ public class MessageResource {
     
     @Inject
     private MessageMapper messageMapper;
-    
+  
+ 
     /**
      * POST  /messages -> Create a new message.
      */
@@ -162,6 +164,23 @@ public class MessageResource {
                 messageMapper.messageToMessageDTO(message),
                 HttpStatus.OK))
             .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
+    }
+    
+    /**Get all messages that are newer than the given message.
+     * 
+     * @param cid the ID of the Conversation.
+     * @param id the ID of the Message the client has last received.
+     * @return a response containing all messages that are newer.
+     */
+    @RequestMapping(value="/conversation/{cid}/new-messages/{id}",
+    		method=RequestMethod.GET,
+    		produces=MediaType.APPLICATION_JSON_VALUE)
+    @Timed
+    public ResponseEntity<List<MessageDTO>> getNewMessages(@PathVariable Long cid,@PathVariable Long id) {
+        log.debug("REST request to get new Messages after : {}", id);
+    	List<Message> newMessages=messageRepository.findAllAfter(cid,id);
+    	log.debug("found {} entries",newMessages.size());
+        return new ResponseEntity<>(messageMapper.messagesToMessageDTOs(newMessages), null, HttpStatus.OK);
     }
 
     /**
