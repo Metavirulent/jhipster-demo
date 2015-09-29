@@ -44,10 +44,15 @@ $icon-font-path: "../../bower_components/bootstrap-sass/assets/fonts/bootstrap/"
 
 .conversations {
   border-right: 1px dashed #afafaf;
+  height: 100%;
 }
 
 #conversation-title {
     border-style: none;
+}
+
+.table-striped tbody tr.active td {
+    background-color: $table-bg-active;
 }
 
 /* Sticky footer styles

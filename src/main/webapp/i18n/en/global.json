@@ -8,6 +8,8 @@
                 "main": "Entities",
                 "conversation": "Conversation",
                 "message": "Message",
+                "project": "Project",
+                "task": "Task",
                 "additionalEntity": "JHipster will add additional entities here (do not translate!)"
             },
             "account": {

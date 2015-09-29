@@ -1,38 +1,25 @@
-package com.bitmen.studios.jhipster.demo.domain;
+package com.bitmen.studios.jhipster.demo.web.rest.dto;
 
-import org.hibernate.annotations.Cache;
-import org.hibernate.annotations.CacheConcurrencyStrategy;
-import org.springframework.data.elasticsearch.annotations.Document;
-
-import javax.persistence.*;
 import javax.validation.constraints.*;
 import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.Objects;
 
-/**
- * A Task.
- */
-@Entity
-@Table(name = "TASK")
-@Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-@Document(indexName="task")
-public class Task implements Serializable {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+/**
+ * A DTO for the Task entity.
+ */
+public class TaskDTO implements Serializable {
+
     private Long id;
 
-    @NotNull        
-    @Column(name = "title", nullable = false)
+    @NotNull
     private String title;
-    
-    @Column(name = "description")
+
     private String description;
 
-    @ManyToOne
-    private Project project;
+    private Long projectId;
 
     public Long getId() {
         return id;
@@ -58,12 +45,12 @@ public class Task implements Serializable {
         this.description = description;
     }
 
-    public Project getProject() {
-        return project;
+    public Long getProjectId() {
+        return projectId;
     }
 
-    public void setProject(Project project) {
-        this.project = project;
+    public void setProjectId(Long projectId) {
+        this.projectId = projectId;
     }
 
     @Override
@@ -75,9 +62,9 @@ public class Task implements Serializable {
             return false;
         }
 
-        Task task = (Task) o;
+        TaskDTO taskDTO = (TaskDTO) o;
 
-        if ( ! Objects.equals(id, task.id)) return false;
+        if ( ! Objects.equals(id, taskDTO.id)) return false;
 
         return true;
     }
@@ -89,7 +76,7 @@ public class Task implements Serializable {
 
     @Override
     public String toString() {
-        return "Task{" +
+        return "TaskDTO{" +
                 "id=" + id +
                 ", title='" + title + "'" +
                 ", description='" + description + "'" +

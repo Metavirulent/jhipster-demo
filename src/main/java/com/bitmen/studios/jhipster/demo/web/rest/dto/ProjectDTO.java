@@ -1,35 +1,25 @@
-package com.bitmen.studios.jhipster.demo.domain;
+package com.bitmen.studios.jhipster.demo.web.rest.dto;
 
-import org.hibernate.annotations.Cache;
-import org.hibernate.annotations.CacheConcurrencyStrategy;
-import org.springframework.data.elasticsearch.annotations.Document;
-
-import javax.persistence.*;
 import javax.validation.constraints.*;
 import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.Objects;
 
-/**
- * A Project.
- */
-@Entity
-@Table(name = "PROJECT")
-@Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-@Document(indexName="project")
-public class Project implements Serializable {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+/**
+ * A DTO for the Project entity.
+ */
+public class ProjectDTO implements Serializable {
+
     private Long id;
 
-    @NotNull        
-    @Column(name = "name", nullable = false)
+    @NotNull
     private String name;
 
-    @ManyToOne
-    private User owner;
+    private Long ownerId;
+
+    private String ownerLogin;
 
     public Long getId() {
         return id;
@@ -47,12 +37,20 @@ public class Project implements Serializable {
         this.name = name;
     }
 
-    public User getOwner() {
-        return owner;
+    public Long getOwnerId() {
+        return ownerId;
     }
 
-    public void setOwner(User user) {
-        this.owner = user;
+    public void setOwnerId(Long userId) {
+        this.ownerId = userId;
+    }
+
+    public String getOwnerLogin() {
+        return ownerLogin;
+    }
+
+    public void setOwnerLogin(String userLogin) {
+        this.ownerLogin = userLogin;
     }
 
     @Override
@@ -64,9 +62,9 @@ public class Project implements Serializable {
             return false;
         }
 
-        Project project = (Project) o;
+        ProjectDTO projectDTO = (ProjectDTO) o;
 
-        if ( ! Objects.equals(id, project.id)) return false;
+        if ( ! Objects.equals(id, projectDTO.id)) return false;
 
         return true;
     }
@@ -78,7 +76,7 @@ public class Project implements Serializable {
 
     @Override
     public String toString() {
-        return "Project{" +
+        return "ProjectDTO{" +
                 "id=" + id +
                 ", name='" + name + "'" +
                 '}';

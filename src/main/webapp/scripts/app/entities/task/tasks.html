@@ -1,0 +1,89 @@
+<div ng-switch="currentProject!=null">
+    <div ng-switch-when="true">
+        <form class="form-inline" ng-submit="projectNameChanged()">
+            <div class="form-group form-group-lg">
+            <label for="conversation-name">Project: </label>
+                <input id="conversation-name" class="form-control" style="font-weight:bold;" ng-model="currentProject.name" required/>
+            </div>
+        </form>
+        <h2 translate="demoApp.task.home.title">Tasks</h2>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4">
+                    <button class="btn btn-primary" ui-sref="tasks.new">
+                        <span class="glyphicon glyphicon-flash"></span> <span translate="demoApp.task.home.createLabel">Create a new Task</span>
+                    </button>
+                </div>
+                <div class="col-md-8">
+                    <form name="searchForm" class="form-inline">
+                        <div class="form-group">
+                            <input type="text" class="form-control" ng-model="searchQuery" id="searchQuery" placeholder="query">
+                        </div>
+                        <button class="btn btn-info" ng-click="search()"><span class="glyphicon glyphicon-search"></span> <span>Search a Task</span>
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal fade" id="deleteTaskConfirmation">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <form name="deleteForm" ng-submit="confirmDelete(task.id)">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true"
+                                    ng-click="clear()">&times;</button>
+                            <h4 class="modal-title" translate="entity.delete.title">Confirm delete operation</h4>
+                        </div>
+                        <div class="modal-body">
+                            <p translate="demoApp.task.delete.question" translate-values="{id: '{{task.id}}'}">Are you sure you want to delete this Task?</p>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="clear()">
+                                <span class="glyphicon glyphicon-ban-circle"></span>&nbsp;<span translate="entity.action.cancel">Cancel</span>
+                            </button>
+                            <button type="submit" ng-disabled="deleteForm.$invalid" class="btn btn-danger">
+                                <span class="glyphicon glyphicon-remove-circle"></span>&nbsp;<span translate="entity.action.delete">Delete</span>
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <div class="table-responsive">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th translate="global.field.id">ID</th>
+                        <th translate="demoApp.task.title">Title</th>
+                        <th translate="demoApp.task.description">Description</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody infinite-scroll="loadPage(page + 1)" infinite-scroll-disabled="links['last'] == page">
+                    <tr ng-repeat="task in tasks">
+                        <td><a ui-sref="tasks.edit({id:task.id})">{{task.id}}</a></td>
+                        <td>{{task.title}}</td>
+                        <td>{{task.description}}</td>
+                        <td>
+                            <button type="submit"
+                                    ui-sref="tasks.edit({id:task.id})"
+                                    class="btn btn-primary btn-sm">
+                                <span class="glyphicon glyphicon-pencil"></span>&nbsp;<span translate="entity.action.edit"> Edit</span>
+                            </button>
+                            <button type="submit"
+                                    ng-click="delete(task.id)"
+                                    class="btn btn-danger btn-sm">
+                                <span class="glyphicon glyphicon-remove-circle"></span>&nbsp;<span translate="entity.action.delete"> Delete</span>
+                            </button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div ng-switch-when="false">
+        <center><p>No project selected.</p></center>
+    </div>
+</div>

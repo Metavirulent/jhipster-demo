@@ -21,7 +21,6 @@ $brand-info:            #9C27B0 !default;
 $brand-warning:         #ff9800 !default;
 $brand-danger:          #e51c23 !default;
 
-
 //== Scaffolding
 //
 //## Settings for some of the most global styles.
@@ -133,7 +132,7 @@ $table-bg:                      transparent !default;
 $table-bg-accent:               #f9f9f9 !default;
 //** Background color used for `.table-hover`.
 $table-bg-hover:                #f5f5f5 !default;
-$table-bg-active:               $table-bg-hover !default;
+$table-bg-active:               lighten($brand-primary,25%) !default;
 
 //** Border color for table and cell borders.
 $table-border-color:            #ddd !default;
