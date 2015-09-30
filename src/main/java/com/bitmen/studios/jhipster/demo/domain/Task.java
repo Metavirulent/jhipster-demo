@@ -17,7 +17,6 @@ import java.util.Objects;
 @Entity
 @Table(name = "TASK")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-@Document(indexName="task")
 public class Task implements Serializable {
 
     @Id
@@ -28,7 +27,7 @@ public class Task implements Serializable {
     @Column(name = "title", nullable = false)
     private String title;
     
-    @Column(name = "description")
+    @Column(name = "description", nullable=true)
     private String description;
 
     @ManyToOne
@@ -93,6 +92,7 @@ public class Task implements Serializable {
                 "id=" + id +
                 ", title='" + title + "'" +
                 ", description='" + description + "'" +
+                ", project="+ (project!=null?project.getId():"")+
                 '}';
     }
 }

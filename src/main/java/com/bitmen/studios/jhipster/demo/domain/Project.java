@@ -1,15 +1,24 @@
 package com.bitmen.studios.jhipster.demo.domain;
 
+import java.io.Serializable;
+import java.util.HashSet;
+import java.util.Objects;
+import java.util.Set;
+
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
+
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.springframework.data.elasticsearch.annotations.Document;
-
-import javax.persistence.*;
-import javax.validation.constraints.*;
-import java.io.Serializable;
-import java.util.HashSet;
-import java.util.Set;
-import java.util.Objects;
 
 /**
  * A Project.
@@ -30,6 +39,9 @@ public class Project implements Serializable {
 
     @ManyToOne
     private User owner;
+    
+    @OneToMany(mappedBy="project",orphanRemoval=true)
+    private Set<Task> tasks=new HashSet<>();
 
     public Long getId() {
         return id;
@@ -55,7 +67,15 @@ public class Project implements Serializable {
         this.owner = user;
     }
 
-    @Override
+    public Set<Task> getTasks() {
+		return tasks;
+	}
+
+	public void setTasks(Set<Task> tasks) {
+		this.tasks = tasks;
+	}
+
+	@Override
     public boolean equals(Object o) {
         if (this == o) {
             return true;

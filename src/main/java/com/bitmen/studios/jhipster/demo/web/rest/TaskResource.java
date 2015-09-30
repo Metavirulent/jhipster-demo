@@ -1,15 +1,18 @@
 package com.bitmen.studios.jhipster.demo.web.rest;
 
-import com.codahale.metrics.annotation.Timed;
-import com.bitmen.studios.jhipster.demo.domain.Task;
-import com.bitmen.studios.jhipster.demo.repository.TaskRepository;
-import com.bitmen.studios.jhipster.demo.repository.search.TaskSearchRepository;
-import com.bitmen.studios.jhipster.demo.web.rest.util.HeaderUtil;
-import com.bitmen.studios.jhipster.demo.web.rest.util.PaginationUtil;
-import com.bitmen.studios.jhipster.demo.web.rest.dto.TaskDTO;
-import com.bitmen.studios.jhipster.demo.web.rest.mapper.TaskMapper;
+import static org.elasticsearch.index.query.QueryBuilders.queryString;
 
-import org.jboss.logging.annotations.Param;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
+
+import javax.inject.Inject;
+import javax.validation.Valid;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -19,19 +22,22 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RestController;
 
-import javax.inject.Inject;
-import javax.validation.Valid;
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
-import java.util.stream.StreamSupport;
-
-import static org.elasticsearch.index.query.QueryBuilders.*;
+import com.bitmen.studios.jhipster.demo.domain.Project;
+import com.bitmen.studios.jhipster.demo.domain.Task;
+import com.bitmen.studios.jhipster.demo.repository.ProjectRepository;
+import com.bitmen.studios.jhipster.demo.repository.TaskRepository;
+import com.bitmen.studios.jhipster.demo.repository.search.TaskSearchRepository;
+import com.bitmen.studios.jhipster.demo.web.rest.dto.TaskDTO;
+import com.bitmen.studios.jhipster.demo.web.rest.mapper.TaskMapper;
+import com.bitmen.studios.jhipster.demo.web.rest.util.HeaderUtil;
+import com.bitmen.studios.jhipster.demo.web.rest.util.PaginationUtil;
+import com.codahale.metrics.annotation.Timed;
 
 /**
  * REST controller for managing Task.
@@ -44,6 +50,9 @@ public class TaskResource {
 
     @Inject
     private TaskRepository taskRepository;
+    
+    @Inject
+    private ProjectRepository projectRepository;
 
     @Inject
     private TaskMapper taskMapper;
@@ -59,16 +68,20 @@ public class TaskResource {
             produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
     public ResponseEntity<TaskDTO> createTask(@PathVariable Long pid,@Valid @RequestBody TaskDTO taskDTO) throws URISyntaxException {
-        log.debug("REST request to save Task : {}", taskDTO);
+        log.debug("REST request to save Task : {} of project ID", taskDTO,pid);
         if (taskDTO.getId() != null) {
             return ResponseEntity.badRequest().header("Failure", "A new task cannot already have an ID").body(null);
         }
         Task task = taskMapper.taskDTOToTask(taskDTO);
+        log.debug("resulting task: {}",task);
+        Project project=projectRepository.findOne(pid);
+        task.setProject(project);
         Task result = taskRepository.save(task);
-        taskSearchRepository.save(result);
+        taskDTO=taskMapper.taskToTaskDTO(result);
+        taskSearchRepository.save(taskDTO);
         return ResponseEntity.created(new URI("/api/tasks/" + result.getId()))
                 .headers(HeaderUtil.createEntityCreationAlert("task", result.getId().toString()))
-                .body(taskMapper.taskToTaskDTO(result));
+                .body(taskDTO);
     }
 
     /**
@@ -85,10 +98,11 @@ public class TaskResource {
         }
         Task task = taskMapper.taskDTOToTask(taskDTO);
         Task result = taskRepository.save(task);
-        taskSearchRepository.save(task);
+        taskDTO=taskMapper.taskToTaskDTO(result);
+        taskSearchRepository.save(taskDTO);
         return ResponseEntity.ok()
                 .headers(HeaderUtil.createEntityUpdateAlert("task", taskDTO.getId().toString()))
-                .body(taskMapper.taskToTaskDTO(result));
+                .body(taskDTO);
     }
 
     /**
@@ -148,7 +162,7 @@ public class TaskResource {
         method = RequestMethod.GET,
         produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
-    public List<Task> searchTasks(@PathVariable String query) {
+    public List<TaskDTO> searchTasks(@PathVariable String query) {
         return StreamSupport
             .stream(taskSearchRepository.search(queryString(query)).spliterator(), false)
             .collect(Collectors.toList());

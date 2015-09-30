@@ -1,8 +1,17 @@
 <div class="container-fluid">
   <div class="row">
-    <div class="col-md-4" ui-view="projects">
+    <div class="col-md-4 conversations" ui-view="projects">
     </div>
-    <div class="col-md-8 well conversation" ui-view="tasks"></div>
+    <div class="col-md-8 well conversation" ui-view="tasks">
+    	<div ng-switch="projects.length>0">
+	    	<div ng-switch-when="true">
+	    		<p>No project selected.</p>
+	    	</div>
+	    	<div ng-switch-when="false">
+	    		<p>There are currently no projects in the system. Start out by creating a <a ui-sref="projects.new">new project.</a></p>
+	    	</div>
+	    </div>
+    </div>
    </div>
     <jh-alert></jh-alert>
 </div>

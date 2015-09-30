@@ -1,10 +1,10 @@
 'use strict';
 
 angular.module('demoApp')
-    .controller('ProjectController', function ($scope, $state, Project, ProjectSearch, ParseLinks) {
-        $scope.projects = [];
+    .controller('ProjectController', function ($scope, $state, $location, Project, ProjectSearch, ParseLinks, projects) {
+        $scope.projects = projects;
         $scope.page = 0;
-        $scope.currentProject=Project.currentProject;
+        $scope.currentProject=Project.getCurrentProject;
 
         $scope.loadAll = function() {
             Project.query({page: $scope.page, size: 20}, function(result, headers) {
@@ -25,19 +25,13 @@ angular.module('demoApp')
         };
 //        $scope.loadAll();
 
-        $scope.delete = function (id) {
-            Project.get({id: id}, function(result) {
-                $scope.project = result;
-                $('#deleteProjectConfirmation').modal('show');
-            });
-        };
-
         $scope.confirmDelete = function (id) {
             Project.delete({id: id},
                 function () {
                     $scope.reset();
                     $('#deleteProjectConfirmation').modal('hide');
                     $scope.clear();
+                    $state.go('projects');
                 });
         };
 
@@ -64,23 +58,23 @@ angular.module('demoApp')
         $scope.$on('demoApp:showProject', function(e, result) {
             if($scope.currentProject===result) return;
             $scope.currentProject=result;
-            $scope.reset();
-        });
+        }); 
 
         $scope.$on('demoApp:projectUpdate', function(e, result) {
-            var index=$scope.projects.indexOf(result);
-            if(index<0) {
-                $scope.projects.push(result);
+            for(var i=0;i<$scope.projects.length;i++) {
+                if(projects[i].id==result.id) {
+                    projects[i]=result;
+                    return;
+                }
             }
-            else $scope.projects[index]=result;
+            $scope.projects.push(result);
         });
 
         $scope.selectProject=function(p) {
             var params={};
-            if(p!=null) params['id']=p.id;
-//            Project.setCurrentProject(p);
-//            $scope.currentProject=p;
-            $state.go("tasks", params, {reload:false});
+            if(p!=null)
+                $state.go('tasks',{pid:p.id},{reload:false});
+            else $state.go('projects');
         }
 
     });

@@ -1,28 +1,35 @@
 'use strict';
 
 angular.module('demoApp')
-    .controller('TaskController', function ($scope, Task, TaskSearch, ParseLinks, currentProject, Project) {
-        $scope.tasks = [];
+    .controller('TaskController', function ($scope, Task, TaskSearch, ParseLinks, Project, tasks, currentProject) {
+        $scope.tasks = tasks;
         $scope.page = 0;
-        $scope.currentProject=Project.currentProject;
+        $scope.currentProject=currentProject;
+        $scope.$emit('demoApp:showProject',currentProject);
+        $scope.searchQuery='';
 
-        $scope.$on('demoApp:showProject', function(e, result) {
+/*        $scope.$on('demoApp:showProject', function(e, result) {
             $scope.currentProject=result;
             $scope.reset();
-        });
+        });*/
 
         $scope.loadAll = function() {
             if($scope.currentProject!=null /*&& $scope.currentProject.$promise.isFulfilled()*/)
                 Task.query({page: $scope.page, size: 20, projectId:$scope.currentProject.id}, function(result, headers) {
                     $scope.links = ParseLinks.parse(headers('link'));
-                    if(result.length>0) {
-                        if(result[0].projectId==Project.currentProjectId())             //might be coming late for wrong project
-                            for (var i = 0; i < result.length; i++) {
-                                $scope.tasks.push(result[i]);
-                            }
-                    }
+                    $scope.addTasks(result);
                 });
         };
+
+        $scope.addTasks = function(result) {
+            if(result.length>0) {
+                if(result[0].projectId==Project.currentProjectId())             //might be coming late for wrong project
+                    for (var i = 0; i < result.length; i++) {
+                        $scope.tasks.push(result[i]);
+                    }
+            }
+        }
+
         $scope.reset = function() {
             $scope.page = 0;
             $scope.tasks = [];
@@ -34,17 +41,18 @@ angular.module('demoApp')
         };
 
 //        if(Project.currentProjectId()!=0)
-//            $scope.loadAll();
+//        $scope.loadAll();
+//        $scope.addTasks(tasks);
 
         $scope.delete = function (id) {
-            Task.get({id: id}, function(result) {
+            Task.get({projectId: $scope.currentProject.id, id: id}, function(result) {
                 $scope.task = result;
                 $('#deleteTaskConfirmation').modal('show');
             });
         };
 
         $scope.confirmDelete = function (id) {
-            Task.delete({id: id},
+            Task.delete({projectId: $scope.currentProject.id, id: id},
                 function () {
                     $scope.reset();
                     $('#deleteTaskConfirmation').modal('hide');
@@ -57,7 +65,7 @@ angular.module('demoApp')
                 $scope.tasks = result;
             }, function(response) {
                 if(response.status === 404) {
-                    $scope.loadAll();
+                    $scope.reset();
                 }
             });
         };
@@ -73,6 +81,17 @@ angular.module('demoApp')
 
         /*The name of the Project was changed.*/
         $scope.projectNameChanged=function() {
-            Project.update($scope.currentProject);
+            Project.update($scope.currentProject,function() {
+                $scope.$emit('demoApp:projectUpdate',$scope.currentProject);
+            });
         }
+
+        $scope.$on('demoApp:taskUpdate', function(e, result) {
+            for(var i=0;i<$scope.tasks.length;i++)
+                if($scope.tasks[i].id==result.id) {
+                    $scope.tasks[i]=result;
+                    return;
+                }
+            $scope.tasks.push(result);
+        });
     });

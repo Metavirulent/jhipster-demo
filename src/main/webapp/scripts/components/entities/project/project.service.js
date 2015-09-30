@@ -17,7 +17,11 @@ angular.module('demoApp')
 
         res.setCurrentProject = function(p) {
             res.currentProject=p;
-            $rootScope.$broadcast('demoApp:showProject',p);
+//            $rootScope.$broadcast('demoApp:showProject',p);
+        }
+
+        res.getCurrentProject = function() {
+            return res.currentProject;
         }
 
         res.currentProjectId = function() {

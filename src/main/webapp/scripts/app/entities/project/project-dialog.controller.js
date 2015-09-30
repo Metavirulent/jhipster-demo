@@ -5,7 +5,6 @@ angular.module('demoApp').controller('ProjectDialogController',
         function($scope, $stateParams, $modalInstance, entity, Project, User) {
 
         $scope.project = entity;
-        $scope.users = User.query();
         $scope.load = function(id) {
             Project.get({id : id}, function(result) {
                 $scope.project = result;
@@ -23,6 +22,14 @@ angular.module('demoApp').controller('ProjectDialogController',
             } else {
                 Project.save($scope.project, onSaveFinished);
             }
+        };
+
+        $scope.delete = function (id) {
+            $modalInstance.dismiss('cancel');
+            Project.get({id: id}, function(result) {
+                $scope.project = result;
+                $('#deleteProjectConfirmation').modal('show');
+            });
         };
 
         $scope.clear = function() {

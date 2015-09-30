@@ -5,6 +5,7 @@ angular.module('demoApp')
         $stateProvider
             .state('projects', {
                 parent: 'entity',
+                url: '/projects',
                 data: {
                     authorities: ['ROLE_USER']
                 },
@@ -22,7 +23,14 @@ angular.module('demoApp')
                         $translatePartialLoader.addPart('project');
                         $translatePartialLoader.addPart('global');
                         return $translate.refresh();
+                    }],
+                    projects: ['Project', function(Project) {
+                        return Project.query({page: 0, size: 20});          //pre-load projects
+
                     }]
+                },
+                onEnter: function() {
+                    console.log("entering projects");
                 }
             })
 /*            .state('project', {
@@ -75,7 +83,7 @@ angular.module('demoApp')
                 data: {
                     authorities: ['ROLE_USER'],
                 },
-                onEnter: ['$stateParams', '$state', '$modal', function($stateParams, $state, $modal) {
+                onEnter: ['$stateParams', '$state', '$modal', 'Project', function($stateParams, $state, $modal, Project) {
                     $modal.open({
                         templateUrl: 'scripts/app/entities/project/project-dialog.html',
                         controller: 'ProjectDialogController',
@@ -86,9 +94,11 @@ angular.module('demoApp')
                             }
                         }
                     }).result.then(function(result) {
-                        $state.go('tasks', {id: result.id}, { reload: true });
+                        $state.go('tasks', {pid: result.id}, { reload: true });
                     }, function() {
-                        $state.go('tasks');
+                        var p=Project.getCurrentProject();
+                        if(p==null) $state.go("projects");
+                        else $state.go('tasks', {pid: p.id});
                     })
                 }]
             })
@@ -98,7 +108,7 @@ angular.module('demoApp')
                 data: {
                     authorities: ['ROLE_USER'],
                 },
-                onEnter: ['$stateParams', '$state', '$modal', function($stateParams, $state, $modal) {
+                onEnter: ['$stateParams', '$state', '$modal', 'Project', function($stateParams, $state, $modal, Project) {
                     $modal.open({
                         templateUrl: 'scripts/app/entities/project/project-dialog.html',
                         controller: 'ProjectDialogController',
@@ -109,9 +119,9 @@ angular.module('demoApp')
                             }]
                         }
                     }).result.then(function(result) {
-                        $state.go('tasks', {id: result.id}, { reload: true });
+                        $state.go('tasks', {pid: result.id}, { reload: true });
                     }, function() {
-                        $state.go('^');
+                        $state.go('tasks', {pid: Project.getCurrentProject().id}, { reload: true });
                     })
                 }]
             });

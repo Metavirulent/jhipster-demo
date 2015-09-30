@@ -1,6 +1,9 @@
 package com.bitmen.studios.jhipster.demo.web.rest.dto;
 
 import javax.validation.constraints.*;
+
+import org.springframework.data.elasticsearch.annotations.Document;
+
 import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
@@ -10,6 +13,7 @@ import java.util.Objects;
 /**
  * A DTO for the Task entity.
  */
+@Document(indexName="task")
 public class TaskDTO implements Serializable {
 
     private Long id;

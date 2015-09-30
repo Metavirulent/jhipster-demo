@@ -1,20 +1,20 @@
+<h2 translate="demoApp.task.home.title">Tasks</h2>
 <div ng-switch="currentProject!=null">
     <div ng-switch-when="true">
-        <form class="form-inline" ng-submit="projectNameChanged()">
-            <div class="form-group form-group-lg">
-            <label for="conversation-name">Project: </label>
-                <input id="conversation-name" class="form-control" style="font-weight:bold;" ng-model="currentProject.name" required/>
-            </div>
-        </form>
-        <h2 translate="demoApp.task.home.title">Tasks</h2>
         <div class="container">
             <div class="row">
+                <form class="form-inline col-md-4" ng-submit="projectNameChanged()">
+                    <div class="form-group form-group-lg">
+                    <label for="conversation-name">Project: </label>
+                        <input id="conversation-name" class="form-control" style="font-weight:bold;" ng-model="currentProject.name" required/>
+                    </div>
+                </form>
                 <div class="col-md-4">
                     <button class="btn btn-primary" ui-sref="tasks.new">
                         <span class="glyphicon glyphicon-flash"></span> <span translate="demoApp.task.home.createLabel">Create a new Task</span>
                     </button>
                 </div>
-                <div class="col-md-8">
+                <!--div class="col-md-4">
                     <form name="searchForm" class="form-inline">
                         <div class="form-group">
                             <input type="text" class="form-control" ng-model="searchQuery" id="searchQuery" placeholder="query">
@@ -22,7 +22,7 @@
                         <button class="btn btn-info" ng-click="search()"><span class="glyphicon glyphicon-search"></span> <span>Search a Task</span>
                         </button>
                     </form>
-                </div>
+                </div-->
             </div>
         </div>
 
@@ -51,6 +51,7 @@
             </div>
         </div>
 
+        <div class="tasks">
         <div class="table-responsive">
             <table class="table table-striped">
                 <thead>
@@ -63,12 +64,12 @@
                 </thead>
                 <tbody infinite-scroll="loadPage(page + 1)" infinite-scroll-disabled="links['last'] == page">
                     <tr ng-repeat="task in tasks">
-                        <td><a ui-sref="tasks.edit({id:task.id})">{{task.id}}</a></td>
+                        <td><a ui-sref="tasks.edit({tid:task.id})">{{task.id}}</a></td>
                         <td>{{task.title}}</td>
                         <td>{{task.description}}</td>
                         <td>
                             <button type="submit"
-                                    ui-sref="tasks.edit({id:task.id})"
+                                    ui-sref="tasks.edit({tid:task.id})"
                                     class="btn btn-primary btn-sm">
                                 <span class="glyphicon glyphicon-pencil"></span>&nbsp;<span translate="entity.action.edit"> Edit</span>
                             </button>
@@ -81,9 +82,10 @@
                     </tr>
                 </tbody>
             </table>
+            </div>
         </div>
     </div>
     <div ng-switch-when="false">
-        <center><p>No project selected.</p></center>
+        <<p>No project selected.</p>
     </div>
 </div>

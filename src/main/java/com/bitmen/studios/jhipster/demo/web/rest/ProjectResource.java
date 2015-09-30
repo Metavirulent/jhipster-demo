@@ -46,8 +46,6 @@ public class ProjectResource {
     @Inject
     private ProjectMapper projectMapper;
 
-    @Inject
-    private ProjectSearchRepository projectSearchRepository;
 
     /**
      * POST  /projects -> Create a new project.
@@ -63,7 +61,6 @@ public class ProjectResource {
         }
         Project project = projectMapper.projectDTOToProject(projectDTO);
         Project result = projectRepository.save(project);
-        projectSearchRepository.save(result);
         return ResponseEntity.created(new URI("/api/projects/" + result.getId()))
                 .headers(HeaderUtil.createEntityCreationAlert("project", result.getId().toString()))
                 .body(projectMapper.projectToProjectDTO(result));
@@ -83,7 +80,6 @@ public class ProjectResource {
         }
         Project project = projectMapper.projectDTOToProject(projectDTO);
         Project result = projectRepository.save(project);
-        projectSearchRepository.save(project);
         return ResponseEntity.ok()
                 .headers(HeaderUtil.createEntityUpdateAlert("project", projectDTO.getId().toString()))
                 .body(projectMapper.projectToProjectDTO(result));
@@ -133,21 +129,7 @@ public class ProjectResource {
     public ResponseEntity<Void> deleteProject(@PathVariable Long id) {
         log.debug("REST request to delete Project : {}", id);
         projectRepository.delete(id);
-        projectSearchRepository.delete(id);
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert("project", id.toString())).build();
     }
 
-    /**
-     * SEARCH  /_search/projects/:query -> search for the project corresponding
-     * to the query.
-     */
-    @RequestMapping(value = "/_search/projects/{query}",
-        method = RequestMethod.GET,
-        produces = MediaType.APPLICATION_JSON_VALUE)
-    @Timed
-    public List<Project> searchProjects(@PathVariable String query) {
-        return StreamSupport
-            .stream(projectSearchRepository.search(queryString(query)).spliterator(), false)
-            .collect(Collectors.toList());
-    }
 }
