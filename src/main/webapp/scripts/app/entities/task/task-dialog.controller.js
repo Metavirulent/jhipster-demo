@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('demoApp').controller('TaskDialogController',
-    ['$scope', '$stateParams', '$modalInstance', 'entity', 'Task', 'Project',
-        function($scope, $stateParams, $modalInstance, entity, Task, Project) {
+    ['$scope', '$stateParams', '$modalInstance', 'entity', 'Task', 'Project', '$rootScope',
+        function($scope, $stateParams, $modalInstance, entity, Task, Project, $rootScope) {
 
         $scope.task = entity;
         $scope.load = function(id) {
@@ -12,7 +12,7 @@ angular.module('demoApp').controller('TaskDialogController',
         };
 
         var onSaveFinished = function (result) {
-            $scope.$emit('demoApp:taskUpdate', result);
+            $rootScope.$broadcast('demoApp:taskUpdate', result);
             $modalInstance.close(result);
         };
 
@@ -27,4 +27,11 @@ angular.module('demoApp').controller('TaskDialogController',
         $scope.clear = function() {
             $modalInstance.dismiss('cancel');
         };
+
+
+        $scope.delete = function (taskId) {
+            $modalInstance.dismiss('cancel');
+            $rootScope.$broadcast('demoApp:deleteTask', taskId);
+        };
+
 }]);

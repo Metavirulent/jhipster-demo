@@ -1,8 +1,8 @@
 <div class="container-fluid">
-  <div class="row">
-    <div class="col-md-4 conversations" ui-view="projects">
+  <div class="">
+    <div class="col-md-4" id="sidebar-wrapper" ui-view="projects">
     </div>
-    <div class="col-md-8 well conversation" ui-view="tasks">
+    <div class="col-md-8 well pull-right" id="main-wrapper" ui-view="tasks">
     	<div ng-switch="projects.length>0">
 	    	<div ng-switch-when="true">
 	    		<p>No project selected.</p>
@@ -13,5 +13,4 @@
 	    </div>
     </div>
    </div>
-    <jh-alert></jh-alert>
 </div>

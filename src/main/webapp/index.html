@@ -20,8 +20,11 @@
             <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
         <![endif]-->
         <div id="wrap">
-            <div ui-view="navbar" ng-cloak=""></div>
-            <div class="" ui-view="content"></div>
+            <div id="header" ui-view="navbar" ng-cloak=""></div>
+            <jh-alert></jh-alert>
+            <div id="wrapper">
+                <div class="" ui-view="content"></div>
+            </div>
         </div>
 
         <div class="footer">

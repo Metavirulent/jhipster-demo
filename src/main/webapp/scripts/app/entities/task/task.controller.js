@@ -44,15 +44,19 @@ angular.module('demoApp')
 //        $scope.loadAll();
 //        $scope.addTasks(tasks);
 
-        $scope.delete = function (id) {
-            Task.get({projectId: $scope.currentProject.id, id: id}, function(result) {
+        $scope.$on('demoApp:deleteTask', function(e,taskId) {
+            $scope.delete(taskId);
+        });
+
+        $scope.delete = function (taskId) {
+            Task.get({projectId: $scope.currentProject.id, id: taskId}, function(result) {
                 $scope.task = result;
                 $('#deleteTaskConfirmation').modal('show');
             });
         };
 
-        $scope.confirmDelete = function (id) {
-            Task.delete({projectId: $scope.currentProject.id, id: id},
+        $scope.confirmDelete = function (taskId) {
+            Task.delete({projectId: $scope.currentProject.id, id: taskId},
                 function () {
                     $scope.reset();
                     $('#deleteTaskConfirmation').modal('hide');
@@ -94,4 +98,5 @@ angular.module('demoApp')
                 }
             $scope.tasks.push(result);
         });
+
     });
